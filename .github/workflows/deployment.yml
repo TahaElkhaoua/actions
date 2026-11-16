@@ -1,0 +1,43 @@
+name: Deploy project
+on: push
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: pull-code
+        uses: actions/checkout@v7
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: install-nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.2
+          cache: ""
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: pull code
+        uses: actions/checkout@v7
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: install nodejs
+        uses: actions/setup-nodejs@v7
+        with:
+          node-version: 24.22.2
+
+      - name: install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build project
+        run: yarn build
+
+      - name: Deploy to AWS
+        run: echo Deployed
